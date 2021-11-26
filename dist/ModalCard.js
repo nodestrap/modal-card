@@ -289,69 +289,62 @@ export function ModalCardElement(props) {
     const headerFn = (() => {
         // default (unset) or string:
         if ((header === undefined) || (typeof header === 'string'))
-            return (<h5 
-            // classes:
-            className={sheet.actionBar}>
-                {header}
-                <CloseButton 
-            // variants:
-            size={props.size} 
-            // actions:
-            onClick={handleClose}/>
-            </h5>);
+            return (React.createElement("h5", { 
+                // classes:
+                className: sheet.actionBar },
+                header,
+                React.createElement(CloseButton
+                // variants:
+                , { 
+                    // variants:
+                    size: props.size, 
+                    // actions:
+                    onClick: handleClose })));
         // other component:
         return header;
     })();
     const footerFn = (() => {
         // default (unset) or string:
         if ((footer === undefined) || (typeof footer === 'string'))
-            return (<p 
-            // classes:
-            className={sheet.actionBar}>
-                {footer}
-                <Button 
-            // variants:
-            size={props.size} 
-            // actions:
-            onClick={handleClose}>
-                    Close
-                </Button>
-            </p>);
+            return (React.createElement("p", { 
+                // classes:
+                className: sheet.actionBar },
+                footer,
+                React.createElement(Button
+                // variants:
+                , { 
+                    // variants:
+                    size: props.size, 
+                    // actions:
+                    onClick: handleClose }, "Close")));
         // other component:
         return footer;
     })();
     // jsx:
-    return (<Popup 
-    // accessibilities:
-    {...{
-        active,
-        inheritActive,
-    }} 
-    // appearances:
-    nude={true} 
-    // classes:
-    classes={[
+    return (React.createElement(Popup, { ...{
+            active,
+            inheritActive,
+        }, 
+        // appearances:
+        nude: true, 
+        // classes:
+        classes: [
             sheet.main, // inject ModalCardElement class
-        ]} stateClasses={[...(props.stateClasses ?? []),
+        ], stateClasses: [...(props.stateClasses ?? []),
             excitedState.class,
-        ]} 
-    // events:
-    onAnimationEnd={(e) => {
+        ], 
+        // events:
+        onAnimationEnd: (e) => {
             // states:
             excitedState.handleAnimationEnd(e);
-        }}>
-            <Card 
-    // other props:
-    {...restProps} 
-    // essentials:
-    elmRef={elmRef} 
-    // accessibilities:
-    {...{
-        tabIndex,
-    }} 
-    // children:
-    header={headerFn} footer={footerFn}/>
-        </Popup>);
+        } },
+        React.createElement(Card, { ...restProps, 
+            // essentials:
+            elmRef: elmRef, ...{
+                tabIndex,
+            }, 
+            // children:
+            header: headerFn, footer: footerFn })));
 }
 ModalCardElement.prototype = ModalElement.prototype; // mark as ModalElement compatible
 export function ModalCard(props) {
@@ -360,21 +353,16 @@ export function ModalCard(props) {
     // variants:
     const modalCardVariant = useModalCardVariant(props);
     // jsx:
-    return (<Modal 
-    // other props:
-    {...props} 
-    // classes:
-    mainClass={props.mainClass ?? sheet.main} variantClasses={[...(props.variantClasses ?? []),
+    return (React.createElement(Modal, { ...props, 
+        // classes:
+        mainClass: props.mainClass ?? sheet.main, variantClasses: [...(props.variantClasses ?? []),
             modalCardVariant.class,
-        ]} 
-    // styles:
-    style={{ ...(props.style ?? {}),
+        ], 
+        // styles:
+        style: { ...(props.style ?? {}),
             // variants:
             ...modalCardVariant.style,
-        }}>
-            <ModalCardElement 
-    // other props:
-    {...props}/>
-        </Modal>);
+        } },
+        React.createElement(ModalCardElement, { ...props })));
 }
 export { ModalCard as default };

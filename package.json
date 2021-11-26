@@ -1,9 +1,9 @@
 {
   "name": "@nodestrap/modal-card",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Overlays a dialog on site page.",
   "type": "module",
-  "main": "dist/ModalCard.jsx",
+  "main": "dist/ModalCard.js",
   "types": "dist/ModalCard.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -33,14 +33,14 @@
     "@cssfn/css-types": "^1.0.2",
     "@cssfn/cssfn": "^1.0.3",
     "@cssfn/react-cssfn": "^1.0.3",
-    "@nodestrap/basic": "^4.0.2",
-    "@nodestrap/button": "^4.0.1",
-    "@nodestrap/card": "^4.0.1",
-    "@nodestrap/close-button": "^4.0.1",
-    "@nodestrap/container": "^4.0.2",
-    "@nodestrap/modal": "^4.0.1",
-    "@nodestrap/popup": "^4.0.1",
-    "@types/react": "^17.0.36",
+    "@nodestrap/basic": "^4.0.3",
+    "@nodestrap/button": "^4.0.2",
+    "@nodestrap/card": "^4.0.2",
+    "@nodestrap/close-button": "^4.0.2",
+    "@nodestrap/container": "^4.0.3",
+    "@nodestrap/modal": "^4.0.2",
+    "@nodestrap/popup": "^4.0.2",
+    "@types/react": "^17.0.37",
     "react": "^17.0.2"
   }
 }
