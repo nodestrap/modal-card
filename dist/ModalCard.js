@@ -153,7 +153,7 @@ export const useModalCardElementSheet = createUseSheet(() => [
             usesActionBarLayout(),
         ]),
     ]),
-]);
+], /*sheetId :*/ 'ifh5e9blw5'); // an unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 export const usesModalCardLayout = () => {
     return composition([
         imports([
@@ -252,7 +252,7 @@ export const useModalCardSheet = createUseSheet(() => [
             usesModalCardStates(),
         ]),
     ]),
-]);
+], /*sheetId :*/ 'j3ol5k9hzm'); // an unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 // configs:
 export const [cssProps, cssDecls, cssVals, cssConfig] = createCssConfig(() => {
     return {
