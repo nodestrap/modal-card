@@ -15,14 +15,14 @@ export declare const useModalCardVariant: (props: ModalCardVariant) => {
         [x: string]: "-moz-initial" | "inherit" | "initial" | "revert" | "unset" | "center" | "end" | "flex-end" | "flex-start" | "self-end" | "self-start" | "start" | "baseline" | "left" | "legacy" | "normal" | "right" | "stretch" | (string & {}) | undefined;
     };
 };
-export declare const usesModalCardElementLayout: () => import("@cssfn/cssfn").StyleCollection;
-export declare const usesModalCardElementVariants: () => import("@cssfn/cssfn").StyleCollection;
-export declare const usesModalCardElementStates: () => import("@cssfn/cssfn").StyleCollection;
-export declare const usesActionBarLayout: () => import("@cssfn/cssfn").StyleCollection;
+export declare const usesModalCardElementLayout: () => import("@cssfn/cssfn").Rule;
+export declare const usesModalCardElementVariants: () => import("@cssfn/cssfn").Rule;
+export declare const usesModalCardElementStates: () => import("@cssfn/cssfn").Rule;
+export declare const usesActionBarLayout: () => import("@cssfn/cssfn").Rule;
 export declare const useModalCardElementSheet: import("@cssfn/types").Factory<import("jss").Classes<"main" | "actionBar">>;
-export declare const usesModalCardLayout: () => import("@cssfn/cssfn").StyleCollection;
-export declare const usesModalCardVariants: () => import("@cssfn/cssfn").StyleCollection;
-export declare const usesModalCardStates: () => import("@cssfn/cssfn").StyleCollection;
+export declare const usesModalCardLayout: () => import("@cssfn/cssfn").Rule;
+export declare const usesModalCardVariants: () => import("@cssfn/cssfn").Rule;
+export declare const usesModalCardStates: () => import("@cssfn/cssfn").Rule;
 export declare const useModalCardSheet: import("@cssfn/types").Factory<import("jss").Classes<"main">>;
 export declare const cssProps: import("@cssfn/css-config").Refs<{
     horzAlign: string;

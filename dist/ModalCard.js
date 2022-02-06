@@ -2,11 +2,13 @@
 import { default as React, } from 'react'; // base technology of our nodestrap components
 import { 
 // compositions:
-composition, compositionOf, mainComposition, imports, 
-// layouts:
-layout, children, 
+compositionOf, mainComposition, 
+// styles:
+style, imports, 
 // rules:
-variants, rule, } from '@cssfn/cssfn'; // cssfn core
+rule, variants, 
+//combinators:
+children, } from '@cssfn/cssfn'; // cssfn core
 import { 
 // hooks:
 createUseSheet, } from '@cssfn/react-cssfn'; // cssfn for react
@@ -16,7 +18,7 @@ usesGeneralProps, usesPrefixedProps, usesSuffixedProps, overwriteProps, } from '
 // nodestrap components:
 import { 
 // hooks:
-usesSizeVariant, usesExcitedState, useExcitedState, } from '@nodestrap/basic';
+usesSizeVariant, useExcitedState, } from '@nodestrap/basic';
 import { 
 // styles:
 usesResponsiveContainerGridLayout, } from '@nodestrap/container';
@@ -28,7 +30,7 @@ import {
 Popup, } from '@nodestrap/popup';
 import { 
 // styles:
-usesModalElementLayout, usesModalLayout, usesModalVariants, usesModalStates, ModalElement, Modal, } from '@nodestrap/modal';
+usesModalElementLayout, usesModalElementStates, usesModalLayout, usesModalVariants, usesModalStates, ModalElement, Modal, } from '@nodestrap/modal';
 export const useModalCardVariant = (props) => {
     return {
         class: props.modalCardStyle ? props.modalCardStyle : null,
@@ -40,12 +42,12 @@ export const useModalCardVariant = (props) => {
 };
 // styles:
 export const usesModalCardElementLayout = () => {
-    return composition([
-        imports([
+    return style({
+        ...imports([
             // layouts:
             usesModalElementLayout(),
         ]),
-        layout({
+        ...style({
             // layouts:
             display: 'flex',
             flexDirection: 'column',
@@ -53,208 +55,167 @@ export const usesModalCardElementLayout = () => {
             alignItems: 'center',
             flexWrap: 'nowrap',
             // children:
-            ...children('*', [
-                layout({
-                    // customize:
-                    ...usesGeneralProps(usesPrefixedProps(cssProps, 'card')), // apply general cssProps starting with card***
-                }),
-            ]),
+            ...children('*', {
+                // customize:
+                ...usesGeneralProps(usesPrefixedProps(cssProps, 'card')), // apply general cssProps starting with card***
+            }),
         }),
-    ]);
+    });
 };
 export const usesModalCardElementVariants = () => {
-    return composition([
-        variants([
-            rule(':not(.scrollable)>&', [
-                layout({
+    return style({
+        ...variants([
+            rule(':not(.scrollable)>&', {
+                // sizes:
+                flex: [[0, 0, 'auto']],
+                boxSizing: 'content-box',
+                inlineSize: 'max-content',
+                blockSize: 'max-content', // forcing the Card's height follows the Card's items height
+            }),
+            rule('.scrollable>&', {
+                // sizes:
+                flex: [[1, 1, 'auto']],
+                // children:
+                ...children(['&', '*'], {
                     // sizes:
-                    flex: [[0, 0, 'auto']],
-                    boxSizing: 'content-box',
-                    inlineSize: 'max-content',
-                    blockSize: 'max-content', // forcing the Card's height follows the Card's items height
-                }),
-            ]),
-            rule('.scrollable>&', [
-                layout({
-                    // sizes:
-                    flex: [[1, 1, 'auto']],
                     boxSizing: 'border-box',
                     inlineSize: 'auto',
                     maxInlineSize: '100%',
                     blockSize: 'auto',
                     maxBlockSize: '100%',
-                    overflow: 'hidden',
-                    // children:
-                    ...children('*', [
-                        layout({
-                            boxSizing: 'inherit',
-                            inlineSize: 'inherit',
-                            maxInlineSize: 'inherit',
-                            blockSize: 'inherit',
-                            maxBlockSize: 'inherit',
-                        }),
-                    ]),
+                    overflow: 'hidden', // force the Card to scroll
                 }),
-            ]),
+            }),
         ]),
-    ]);
+    });
 };
 export const usesModalCardElementStates = () => {
-    // dependencies:
-    // states:
-    const [excited] = usesExcitedState();
-    return composition([
-        imports([
+    return style({
+        ...imports([
             // states:
-            excited(),
+            usesModalElementStates(),
         ]),
-    ]);
+    });
 };
 export const usesActionBarLayout = () => {
-    return composition([
-        layout({
-            // layouts:
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'nowrap',
-            // children:
-            ...children('*', [
-                variants([
-                    // only one child:
-                    rule(':first-child:last-child', [
-                        layout({
-                            marginInlineStart: 'auto',
-                        }),
-                    ]),
-                ]),
-            ]),
+    return style({
+        // layouts:
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexWrap: 'nowrap',
+        // children:
+        ...children('*', {
+            // only one child:
+            ...rule(':first-child:last-child', {
+                marginInlineStart: 'auto',
+            }),
         }),
-    ]);
+    });
 };
 export const useModalCardElementSheet = createUseSheet(() => [
-    mainComposition([
-        variants([
-            rule('&&', [
-                imports([
-                    // layouts:
-                    usesModalCardElementLayout(),
-                    // variants:
-                    usesModalCardElementVariants(),
-                    // states:
-                    usesModalCardElementStates(),
-                ]),
-            ]),
+    mainComposition(rule('&&', {
+        ...imports([
+            // layouts:
+            usesModalCardElementLayout(),
+            // variants:
+            usesModalCardElementVariants(),
+            // states:
+            usesModalCardElementStates(),
         ]),
-    ]),
-    compositionOf('actionBar', [
-        imports([
-            usesActionBarLayout(),
-        ]),
-    ]),
+    })),
+    compositionOf('actionBar', imports([
+        usesActionBarLayout(),
+    ])),
 ], /*sheetId :*/ 'ifh5e9blw5'); // an unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 export const usesModalCardLayout = () => {
-    return composition([
-        imports([
+    return style({
+        ...imports([
             // layouts:
             usesModalLayout(),
         ]),
-        layout({
+        ...style({
             // layouts:
             // display      : 'grid',             // already defined in `usesResponsiveContainerGridLayout()`. We use a grid for the layout, so we can align the Card both horizontally & vertically
             // child default sizes:
             justifyItems: cssProps.horzAlign,
             alignItems: cssProps.vertAlign,
             // children:
-            ...children('*', [
-                layout({
-                    // layouts:
-                    gridArea: 'content',
-                }),
-            ]),
+            ...children('*', {
+                // layouts:
+                gridArea: 'content',
+            }),
             //#region psedudo elm for filling the end of horz & vert scroll
-            ...children(['::before', '::after'], [
-                layout({
-                    // layouts:
-                    content: '""',
-                    display: 'block',
-                    // sizes:
-                    // fills the entire grid area:
-                    justifySelf: 'stretch',
-                    alignSelf: 'stretch',
-                    // appearances:
-                    visibility: 'hidden',
-                }),
-            ]),
-            ...children('::before', [
-                layout({
-                    // layouts:
-                    gridArea: 'inlineEnd',
-                }),
-            ]),
-            ...children('::after', [
-                layout({
-                    // layouts:
-                    gridArea: 'blockEnd',
-                }),
-            ]),
+            ...children(['::before', '::after'], {
+                // layouts:
+                content: '""',
+                display: 'block',
+                // sizes:
+                // fills the entire grid area:
+                justifySelf: 'stretch',
+                alignSelf: 'stretch',
+                // appearances:
+                visibility: 'hidden',
+            }),
+            ...children('::before', {
+                // layouts:
+                gridArea: 'inlineEnd',
+            }),
+            ...children('::after', {
+                // layouts:
+                gridArea: 'blockEnd',
+            }),
             //#endregion psedudo elm for filling the end of horz & vert scroll
             // customize:
             ...usesGeneralProps(cssProps), // apply general cssProps
         }),
-        imports([
+        ...imports([
             // layouts:
             usesResponsiveContainerGridLayout(), // applies responsive container functionality using css grid
         ]),
-    ]);
+    });
 };
 export const usesModalCardVariants = () => {
     // dependencies:
     // layouts:
-    const [sizes] = usesSizeVariant((sizeName) => composition([
-        layout({
-            // overwrites propName = propName{SizeName}:
-            ...overwriteProps(cssDecls, usesSuffixedProps(cssProps, sizeName)),
-        }),
-    ]));
-    return composition([
-        imports([
+    const [sizes] = usesSizeVariant((sizeName) => style({
+        // overwrites propName = propName{SizeName}:
+        ...overwriteProps(cssDecls, usesSuffixedProps(cssProps, sizeName)),
+    }));
+    return style({
+        ...imports([
             // variants:
             usesModalVariants(),
             // layouts:
             sizes(),
         ]),
-        variants([
-            rule(':not(.scrollable)', [
-                layout({
-                    // scrolls:
-                    // scroller at ModalCard's layer
-                    overflow: 'auto', // enable horz & vert scrolling
-                }),
-            ]),
+        ...variants([
+            rule(':not(.scrollable)', {
+                // scrolls:
+                // scroller at ModalCard's layer
+                overflow: 'auto', // enable horz & vert scrolling on Modal (backdrop)
+            }),
         ]),
-    ]);
+    });
 };
 export const usesModalCardStates = () => {
-    return composition([
-        imports([
+    return style({
+        ...imports([
             // states:
             usesModalStates(),
         ]),
-    ]);
+    });
 };
 export const useModalCardSheet = createUseSheet(() => [
-    mainComposition([
-        imports([
-            // layouts:
-            usesModalCardLayout(),
-            // variants:
-            usesModalCardVariants(),
-            // states:
-            usesModalCardStates(),
-        ]),
-    ]),
+    mainComposition(imports([
+        // layouts:
+        usesModalCardLayout(),
+        // variants:
+        usesModalCardVariants(),
+        // states:
+        usesModalCardStates(),
+    ])),
 ], /*sheetId :*/ 'j3ol5k9hzm'); // an unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 // configs:
 export const [cssProps, cssDecls, cssVals, cssConfig] = createCssConfig(() => {
@@ -278,7 +239,7 @@ export function ModalCardElement(props) {
     inheritActive, // from accessibilities, moved to Popup
     tabIndex = -1, // from ModalElement   , moved to Card
     // actions:
-    onActiveChange, onExcitedChange, // not implemented
+    onActiveChange, onExcitedChange, 
     // children:
     header, footer, ...restProps } = props;
     // handlers:
