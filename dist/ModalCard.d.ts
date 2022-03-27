@@ -2,28 +2,28 @@
 import type { Prop } from '@cssfn/css-types';
 import { TogglerExcitedProps } from '@nodestrap/basic';
 import { OrientationName, OrientationVariant, CardProps } from '@nodestrap/card';
-import { ModalStyle, ModalVariant, ModalCloseType, ModalElementProps, ModalProps } from '@nodestrap/modal';
+import { BackdropStyle, BackdropVariant, ModalCloseType, DialogProps, ModalProps } from '@nodestrap/modal';
 export declare type ModalCardStyle = 'scrollable';
 export interface ModalCardVariant {
     modalCardStyle?: ModalCardStyle;
     horzAlign?: Prop.JustifyItems;
     vertAlign?: Prop.AlignItems;
 }
-export declare const useModalCardVariant: (props: ModalCardVariant) => {
+export declare const useModalCardVariant: ({ modalCardStyle, horzAlign, vertAlign }: ModalCardVariant) => {
     class: "scrollable" | null;
     style: {
         [x: string]: "-moz-initial" | "inherit" | "initial" | "revert" | "unset" | "center" | "end" | "flex-end" | "flex-start" | "self-end" | "self-start" | "start" | "baseline" | "left" | "legacy" | "normal" | "right" | "stretch" | (string & {}) | undefined;
     };
 };
-export declare const usesModalCardElementLayout: () => import("@cssfn/cssfn").Rule;
-export declare const usesModalCardElementVariants: () => import("@cssfn/cssfn").Rule;
-export declare const usesModalCardElementStates: () => import("@cssfn/cssfn").Rule;
+export declare const usesCardDialogLayout: () => import("@cssfn/cssfn").Rule;
+export declare const usesCardDialogVariants: () => import("@cssfn/cssfn").Rule;
+export declare const usesCardDialogStates: () => import("@cssfn/cssfn").Rule;
 export declare const usesActionBarLayout: () => import("@cssfn/cssfn").Rule;
-export declare const useModalCardElementSheet: import("@cssfn/types").Factory<import("jss").Classes<"main" | "actionBar">>;
-export declare const usesModalCardLayout: () => import("@cssfn/cssfn").Rule;
-export declare const usesModalCardVariants: () => import("@cssfn/cssfn").Rule;
-export declare const usesModalCardStates: () => import("@cssfn/cssfn").Rule;
-export declare const useModalCardSheet: import("@cssfn/types").Factory<import("jss").Classes<"main">>;
+export declare const useCardDialogSheet: import("@cssfn/types").Factory<import("jss").Classes<"main" | "actionBar">>;
+export declare const usesCardBackdropLayout: () => import("@cssfn/cssfn").Rule;
+export declare const usesCardBackdropVariants: () => import("@cssfn/cssfn").Rule;
+export declare const usesCardBackdropStates: () => import("@cssfn/cssfn").Rule;
+export declare const useCardBackdropSheet: import("@cssfn/types").Factory<import("jss").Classes<"main">>;
 export declare const cssProps: import("@cssfn/css-config").Refs<{
     horzAlign: string;
     vertAlign: string;
@@ -35,15 +35,12 @@ export declare const cssProps: import("@cssfn/css-config").Refs<{
     vertAlign: string;
 }>, cssConfig: import("@cssfn/css-config").CssConfigSettings;
 export declare type ModalCardCloseType = 'ui' | ModalCloseType;
-export interface ModalCardElementProps<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType> extends ModalElementProps<TElement, TCloseType>, CardProps<TElement>, TogglerExcitedProps, ModalCardVariant {
+export interface CardDialogProps<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType> extends DialogProps<TElement, TCloseType>, CardProps<TElement>, ModalCardVariant, TogglerExcitedProps {
 }
-export declare function ModalCardElement<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType>(props: ModalCardElementProps<TElement, TCloseType>): JSX.Element;
-export declare namespace ModalCardElement {
-    var prototype: any;
-}
-export interface ModalCardProps<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType> extends ModalProps<TElement, TCloseType>, ModalCardElementProps<TElement, TCloseType> {
+export declare function CardDialog<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType>(props: CardDialogProps<TElement, TCloseType>): JSX.Element;
+export interface ModalCardProps<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType> extends ModalProps<TElement, TCloseType>, CardDialogProps<TElement, TCloseType> {
 }
 export declare function ModalCard<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType>(props: ModalCardProps<TElement, TCloseType>): JSX.Element;
 export { ModalCard as default };
 export type { OrientationName, OrientationVariant };
-export type { ModalStyle, ModalVariant };
+export type { BackdropStyle, BackdropVariant };

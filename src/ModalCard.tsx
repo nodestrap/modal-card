@@ -75,26 +75,25 @@ import {
 }                           from '@nodestrap/popup'
 import {
     // hooks:
-    ModalStyle,
-    ModalVariant,
+    BackdropStyle,
+    BackdropVariant,
     
     
     
     // styles:
-    usesModalElementLayout,
-    usesModalElementStates,
+    usesDialogLayout,
+    usesDialogStates,
     
-    usesModalLayout,
-    usesModalVariants,
-    usesModalStates,
+    usesBackdropLayout,
+    usesBackdropVariants,
+    usesBackdropStates,
     
     
     
     // react components:
     ModalCloseType,
     
-    ModalElementProps,
-    ModalElement,
+    DialogProps,
     
     ModalProps,
     Modal,
@@ -112,13 +111,13 @@ export interface ModalCardVariant {
     horzAlign?      : Prop.JustifyItems
     vertAlign?      : Prop.AlignItems
 }
-export const useModalCardVariant = (props: ModalCardVariant) => {
+export const useModalCardVariant = ({ modalCardStyle, horzAlign, vertAlign }: ModalCardVariant) => {
     return {
-        class : props.modalCardStyle ? props.modalCardStyle : null,
+        class : modalCardStyle ? modalCardStyle : null,
         
         style : {
-            [cssDecls.horzAlign] : props.horzAlign,
-            [cssDecls.vertAlign] : props.vertAlign,
+            [cssDecls.horzAlign] : horzAlign,
+            [cssDecls.vertAlign] : vertAlign,
         },
     };
 };
@@ -126,31 +125,31 @@ export const useModalCardVariant = (props: ModalCardVariant) => {
 
 
 // styles:
-export const usesModalCardElementLayout = () => {
+export const usesCardDialogLayout = () => {
     return style({
         ...imports([
             // layouts:
-            usesModalElementLayout(),
+            usesDialogLayout(),
         ]),
         ...style({
             // layouts:
             display        : 'flex',
             flexDirection  : 'column',
-            justifyContent : 'start',   // if Card is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the Card's header should be visible first
-            alignItems     : 'center',  // center Card horizontally
+            justifyContent : 'start',   // if <Card> is not growable, the excess space (if any) placed at the end, and if no sufficient space available => the <Card>'s header should be visible first
+            alignItems     : 'center',  // center <Card> horizontally
             flexWrap       : 'nowrap',  // no wrapping
             
             
             
             // children:
-            ...children('*', { // Card
+            ...children('*', { // <Card>
                 // customize:
                 ...usesGeneralProps(usesPrefixedProps(cssProps, 'card')), // apply general cssProps starting with card***
             }),
         }),
     });
 };
-export const usesModalCardElementVariants = () => {
+export const usesCardDialogVariants = () => {
     return style({
         ...variants([
             rule(':not(.scrollable)>&', {
@@ -158,8 +157,8 @@ export const usesModalCardElementVariants = () => {
                 flex          : [[0, 0, 'auto']], // ungrowable, unshrinkable, initial from it's height
                 
                 boxSizing     : 'content-box',    // the final size is excluding borders & paddings
-                inlineSize    : 'max-content',    // forcing the Card's width follows the Card's items width
-                blockSize     : 'max-content',    // forcing the Card's height follows the Card's items height
+                inlineSize    : 'max-content',    // forcing the <Card>'s width follows the <Card>'s items width
+                blockSize     : 'max-content',    // forcing the <Card>'s height follows the <Card>'s items height
             }),
             rule('.scrollable>&', {
                 // sizes:
@@ -168,24 +167,24 @@ export const usesModalCardElementVariants = () => {
                 
                 
                 // children:
-                ...children(['&', '*'], { // Popup & Card
+                ...children(['&', '*'], { // <Popup> & <Card>
                     // sizes:
                     boxSizing     : 'border-box',     // the final size is including borders & paddings
                     inlineSize    : 'auto',           // follows the content's width, but
                     maxInlineSize : '100%',           // up to the maximum available parent's width
                     blockSize     : 'auto',           // follows the content's height, but
                     maxBlockSize  : '100%',           // up to the maximum available parent's height
-                    overflow      : 'hidden',         // force the Card to scroll
+                    overflow      : 'hidden',         // force the <Card> to scroll
                 }),
             }),
         ]),
     });
 };
-export const usesModalCardElementStates = () => {
+export const usesCardDialogStates = () => {
     return style({
         ...imports([
             // states:
-            usesModalElementStates(),
+            usesDialogStates(),
         ]),
     });
 };
@@ -211,18 +210,18 @@ export const usesActionBarLayout = () => {
     });
 };
 
-export const useModalCardElementSheet = createUseSheet(() => [
+export const useCardDialogSheet = createUseSheet(() => [
     mainComposition(
-        rule('&&', { // makes `.ModalCardElement` is more specific than `.Popup`
+        rule('&&', { // makes `.CardDialog` is more specific than `.Popup`
             ...imports([
                 // layouts:
-                usesModalCardElementLayout(),
+                usesCardDialogLayout(),
                 
                 // variants:
-                usesModalCardElementVariants(),
+                usesCardDialogVariants(),
                 
                 // states:
-                usesModalCardElementStates(),
+                usesCardDialogStates(),
             ]),
         }),
     ),
@@ -235,15 +234,15 @@ export const useModalCardElementSheet = createUseSheet(() => [
 
 
 
-export const usesModalCardLayout = () => {
+export const usesCardBackdropLayout = () => {
     return style({
         ...imports([
             // layouts:
-            usesModalLayout(),
+            usesBackdropLayout(),
         ]),
         ...style({
             // layouts:
-         // display      : 'grid',             // already defined in `usesResponsiveContainerGridLayout()`. We use a grid for the layout, so we can align the Card both horizontally & vertically
+         // display      : 'grid',             // already defined in `usesResponsiveContainerGridLayout()`. We use a grid for the layout, so we can align the <Card> both horizontally & vertically
             
             // child default sizes:
             justifyItems : cssProps.horzAlign, // align (default center) horizontally
@@ -252,7 +251,7 @@ export const usesModalCardLayout = () => {
             
             
             // children:
-            ...children('*', {
+            ...children('*', { // <CardDialog>
                 // layouts:
                 gridArea : 'content',
             }),
@@ -296,7 +295,7 @@ export const usesModalCardLayout = () => {
         ]),
     });
 };
-export const usesModalCardVariants = () => {
+export const usesCardBackdropVariants = () => {
     // dependencies:
     
     // layouts:
@@ -310,7 +309,7 @@ export const usesModalCardVariants = () => {
     return style({
         ...imports([
             // variants:
-            usesModalVariants(),
+            usesBackdropVariants(),
             
             // layouts:
             sizes(),
@@ -324,26 +323,26 @@ export const usesModalCardVariants = () => {
         ]),
     });
 };
-export const usesModalCardStates = () => {
+export const usesCardBackdropStates = () => {
     return style({
         ...imports([
             // states:
-            usesModalStates(),
+            usesBackdropStates(),
         ]),
     });
 };
 
-export const useModalCardSheet = createUseSheet(() => [
+export const useCardBackdropSheet = createUseSheet(() => [
     mainComposition(
         imports([
             // layouts:
-            usesModalCardLayout(),
+            usesCardBackdropLayout(),
             
             // variants:
-            usesModalCardVariants(),
+            usesCardBackdropVariants(),
             
             // states:
-            usesModalCardStates(),
+            usesCardBackdropStates(),
         ]),
     ),
 ], /*sheetId :*/'j3ol5k9hzm'); // an unique salt for SSR support, ensures the server-side & client-side have the same generated class names
@@ -367,21 +366,21 @@ export type ModalCardCloseType = 'ui'|ModalCloseType
 
 
 
-export interface ModalCardElementProps<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType>
+export interface CardDialogProps<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType>
     extends
-        ModalElementProps<TElement, TCloseType>,
+        DialogProps<TElement, TCloseType>,
         CardProps<TElement>,
         
-        // states:
-        TogglerExcitedProps,
-        
         // appearances:
-        ModalCardVariant
+        ModalCardVariant,
+        
+        // states:
+        TogglerExcitedProps
 {
 }
-export function ModalCardElement<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType>(props: ModalCardElementProps<TElement, TCloseType>) {
+export function CardDialog<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType>(props: CardDialogProps<TElement, TCloseType>) {
     // styles:
-    const sheet        = useModalCardElementSheet();
+    const sheet        = useCardDialogSheet();
     
     
     
@@ -393,23 +392,25 @@ export function ModalCardElement<TElement extends HTMLElement = HTMLElement, TCl
     // rest props:
     const {
         // essentials:
-        elmRef,         // moved to Card
+        elmRef,          // moved to <Card>
         
         
         // accessibilities:
-        active,         // from accessibilities, moved to Popup
-        inheritActive,  // from accessibilities, moved to Popup
-        tabIndex = -1,  // from ModalElement   , moved to Card
+        isModal,         // moved to <Popup>
+        isVisible,       // moved to <Popup>
+        tabIndex = -1,   // moved to <Card>
+        active,          // moved to <Popup>
+        inheritActive,   // moved to <Popup>
         
         
         // actions:
-        onActiveChange,
-        onExcitedChange,
+        onActiveChange,  // implemented
+        onExcitedChange, // not implemented
         
         
         // children:
-        header,
-        footer,
+        header,          // changed the default
+        footer,          // changed the default
     ...restProps} = props;
     
     
@@ -482,20 +483,27 @@ export function ModalCardElement<TElement extends HTMLElement = HTMLElement, TCl
     // jsx:
     return (
         <Popup<TElement>
-            // accessibilities:
+            // semantics:
+            semanticTag ={props.semanticTag   ?? 'dialog'}
+            semanticRole={props.semanticRole  ?? 'dialog'}
+            aria-modal={isModal}
             {...{
-                active,
-                inheritActive,
+                open : isVisible,
             }}
             
             
-            // appearances:
+            // accessibilities:
+            active={active}
+            inheritActive={inheritActive}
+            
+            
+            // layouts:
             nude={true}
             
             
             // classes:
             classes={[
-                sheet.main, // inject ModalCardElement class
+                sheet.main, // inject CardDialog class
             ]}
             stateClasses={[...(props.stateClasses ?? []),
                 excitedState.class,
@@ -530,19 +538,18 @@ export function ModalCardElement<TElement extends HTMLElement = HTMLElement, TCl
         </Popup>
     );
 }
-ModalCardElement.prototype = ModalElement.prototype; // mark as ModalElement compatible
 
 
 
 export interface ModalCardProps<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType>
     extends
         ModalProps<TElement, TCloseType>,
-        ModalCardElementProps<TElement, TCloseType>
+        CardDialogProps<TElement, TCloseType>
 {
 }
 export function ModalCard<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType>(props: ModalCardProps<TElement, TCloseType>) {
     // styles:
-    const sheet              = useModalCardSheet();
+    const sheet              = useCardBackdropSheet();
     
     
     
@@ -551,11 +558,47 @@ export function ModalCard<TElement extends HTMLElement = HTMLElement, TCloseType
     
     
     
+    // rest props:
+    const {
+        // components:
+        dialog = <CardDialog<TElement, TCloseType> />,
+        
+        
+        // ModalCardVariant:
+        modalCardStyle,
+        horzAlign,
+        vertAlign,
+        
+        
+        // children:
+        header,
+        footer,
+        children,
+    ...restBackdropProps} = props;
+    
+    
+    
     // jsx:
+    const defaultDialogProps : CardDialogProps<TElement, TCloseType> = {
+        // ModalCardVariant:
+        modalCardStyle,
+        horzAlign,
+        vertAlign,
+        
+        
+        // children:
+        header,
+        footer,
+        children,
+    };
     return (
         <Modal<TElement, TCloseType>
             // other props:
-            {...props}
+            {...restBackdropProps}
+            
+            
+            // components:
+            dialog={React.cloneElement(React.cloneElement(dialog, defaultDialogProps), dialog.props)}
             
             
             // classes:
@@ -570,16 +613,11 @@ export function ModalCard<TElement extends HTMLElement = HTMLElement, TCloseType
                 // variants:
                 ...modalCardVariant.style,
             }}
-        >
-            <ModalCardElement<TElement, TCloseType>
-                // other props:
-                {...props}
-            />
-        </Modal>
+        />
     );
 }
 export { ModalCard as default }
 
 export type { OrientationName, OrientationVariant }
 
-export type { ModalStyle, ModalVariant }
+export type { BackdropStyle, BackdropVariant }

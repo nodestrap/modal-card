@@ -30,22 +30,22 @@ import {
 Popup, } from '@nodestrap/popup';
 import { 
 // styles:
-usesModalElementLayout, usesModalElementStates, usesModalLayout, usesModalVariants, usesModalStates, ModalElement, Modal, } from '@nodestrap/modal';
-export const useModalCardVariant = (props) => {
+usesDialogLayout, usesDialogStates, usesBackdropLayout, usesBackdropVariants, usesBackdropStates, Modal, } from '@nodestrap/modal';
+export const useModalCardVariant = ({ modalCardStyle, horzAlign, vertAlign }) => {
     return {
-        class: props.modalCardStyle ? props.modalCardStyle : null,
+        class: modalCardStyle ? modalCardStyle : null,
         style: {
-            [cssDecls.horzAlign]: props.horzAlign,
-            [cssDecls.vertAlign]: props.vertAlign,
+            [cssDecls.horzAlign]: horzAlign,
+            [cssDecls.vertAlign]: vertAlign,
         },
     };
 };
 // styles:
-export const usesModalCardElementLayout = () => {
+export const usesCardDialogLayout = () => {
     return style({
         ...imports([
             // layouts:
-            usesModalElementLayout(),
+            usesDialogLayout(),
         ]),
         ...style({
             // layouts:
@@ -62,7 +62,7 @@ export const usesModalCardElementLayout = () => {
         }),
     });
 };
-export const usesModalCardElementVariants = () => {
+export const usesCardDialogVariants = () => {
     return style({
         ...variants([
             rule(':not(.scrollable)>&', {
@@ -70,7 +70,7 @@ export const usesModalCardElementVariants = () => {
                 flex: [[0, 0, 'auto']],
                 boxSizing: 'content-box',
                 inlineSize: 'max-content',
-                blockSize: 'max-content', // forcing the Card's height follows the Card's items height
+                blockSize: 'max-content', // forcing the <Card>'s height follows the <Card>'s items height
             }),
             rule('.scrollable>&', {
                 // sizes:
@@ -83,17 +83,17 @@ export const usesModalCardElementVariants = () => {
                     maxInlineSize: '100%',
                     blockSize: 'auto',
                     maxBlockSize: '100%',
-                    overflow: 'hidden', // force the Card to scroll
+                    overflow: 'hidden', // force the <Card> to scroll
                 }),
             }),
         ]),
     });
 };
-export const usesModalCardElementStates = () => {
+export const usesCardDialogStates = () => {
     return style({
         ...imports([
             // states:
-            usesModalElementStates(),
+            usesDialogStates(),
         ]),
     });
 };
@@ -114,30 +114,30 @@ export const usesActionBarLayout = () => {
         }),
     });
 };
-export const useModalCardElementSheet = createUseSheet(() => [
+export const useCardDialogSheet = createUseSheet(() => [
     mainComposition(rule('&&', {
         ...imports([
             // layouts:
-            usesModalCardElementLayout(),
+            usesCardDialogLayout(),
             // variants:
-            usesModalCardElementVariants(),
+            usesCardDialogVariants(),
             // states:
-            usesModalCardElementStates(),
+            usesCardDialogStates(),
         ]),
     })),
     compositionOf('actionBar', imports([
         usesActionBarLayout(),
     ])),
 ], /*sheetId :*/ 'ifh5e9blw5'); // an unique salt for SSR support, ensures the server-side & client-side have the same generated class names
-export const usesModalCardLayout = () => {
+export const usesCardBackdropLayout = () => {
     return style({
         ...imports([
             // layouts:
-            usesModalLayout(),
+            usesBackdropLayout(),
         ]),
         ...style({
             // layouts:
-            // display      : 'grid',             // already defined in `usesResponsiveContainerGridLayout()`. We use a grid for the layout, so we can align the Card both horizontally & vertically
+            // display      : 'grid',             // already defined in `usesResponsiveContainerGridLayout()`. We use a grid for the layout, so we can align the <Card> both horizontally & vertically
             // child default sizes:
             justifyItems: cssProps.horzAlign,
             alignItems: cssProps.vertAlign,
@@ -176,7 +176,7 @@ export const usesModalCardLayout = () => {
         ]),
     });
 };
-export const usesModalCardVariants = () => {
+export const usesCardBackdropVariants = () => {
     // dependencies:
     // layouts:
     const [sizes] = usesSizeVariant((sizeName) => style({
@@ -186,7 +186,7 @@ export const usesModalCardVariants = () => {
     return style({
         ...imports([
             // variants:
-            usesModalVariants(),
+            usesBackdropVariants(),
             // layouts:
             sizes(),
         ]),
@@ -199,22 +199,22 @@ export const usesModalCardVariants = () => {
         ]),
     });
 };
-export const usesModalCardStates = () => {
+export const usesCardBackdropStates = () => {
     return style({
         ...imports([
             // states:
-            usesModalStates(),
+            usesBackdropStates(),
         ]),
     });
 };
-export const useModalCardSheet = createUseSheet(() => [
+export const useCardBackdropSheet = createUseSheet(() => [
     mainComposition(imports([
         // layouts:
-        usesModalCardLayout(),
+        usesCardBackdropLayout(),
         // variants:
-        usesModalCardVariants(),
+        usesCardBackdropVariants(),
         // states:
-        usesModalCardStates(),
+        usesCardBackdropStates(),
     ])),
 ], /*sheetId :*/ 'j3ol5k9hzm'); // an unique salt for SSR support, ensures the server-side & client-side have the same generated class names
 // configs:
@@ -225,23 +225,28 @@ export const [cssProps, cssDecls, cssVals, cssConfig] = createCssConfig(() => {
         vertAlign: 'center',
     };
 }, { prefix: 'mdlcrd' });
-export function ModalCardElement(props) {
+export function CardDialog(props) {
     // styles:
-    const sheet = useModalCardElementSheet();
+    const sheet = useCardDialogSheet();
     // states:
     const excitedState = useExcitedState(props);
     // rest props:
     const { 
     // essentials:
-    elmRef, // moved to Card
+    elmRef, // moved to <Card>
     // accessibilities:
-    active, // from accessibilities, moved to Popup
-    inheritActive, // from accessibilities, moved to Popup
-    tabIndex = -1, // from ModalElement   , moved to Card
+    isModal, // moved to <Popup>
+    isVisible, // moved to <Popup>
+    tabIndex = -1, // moved to <Card>
+    active, // moved to <Popup>
+    inheritActive, // moved to <Popup>
     // actions:
-    onActiveChange, onExcitedChange, 
+    onActiveChange, // implemented
+    onExcitedChange, // not implemented
     // children:
-    header, footer, ...restProps } = props;
+    header, // changed the default
+    footer, // changed the default
+    ...restProps } = props;
     // handlers:
     const handleClose = onActiveChange && ((e) => {
         if (!e.defaultPrevented) {
@@ -285,15 +290,18 @@ export function ModalCardElement(props) {
         return footer;
     })();
     // jsx:
-    return (React.createElement(Popup, { ...{
-            active,
-            inheritActive,
+    return (React.createElement(Popup, { 
+        // semantics:
+        semanticTag: props.semanticTag ?? 'dialog', semanticRole: props.semanticRole ?? 'dialog', "aria-modal": isModal, ...{
+            open: isVisible,
         }, 
-        // appearances:
+        // accessibilities:
+        active: active, inheritActive: inheritActive, 
+        // layouts:
         nude: true, 
         // classes:
         classes: [
-            sheet.main, // inject ModalCardElement class
+            sheet.main, // inject CardDialog class
         ], stateClasses: [...(props.stateClasses ?? []),
             excitedState.class,
         ], 
@@ -310,14 +318,33 @@ export function ModalCardElement(props) {
             // children:
             header: headerFn, footer: footerFn })));
 }
-ModalCardElement.prototype = ModalElement.prototype; // mark as ModalElement compatible
 export function ModalCard(props) {
     // styles:
-    const sheet = useModalCardSheet();
+    const sheet = useCardBackdropSheet();
     // variants:
     const modalCardVariant = useModalCardVariant(props);
+    // rest props:
+    const { 
+    // components:
+    dialog = React.createElement(CardDialog, null), 
+    // ModalCardVariant:
+    modalCardStyle, horzAlign, vertAlign, 
+    // children:
+    header, footer, children, ...restBackdropProps } = props;
     // jsx:
-    return (React.createElement(Modal, { ...props, 
+    const defaultDialogProps = {
+        // ModalCardVariant:
+        modalCardStyle,
+        horzAlign,
+        vertAlign,
+        // children:
+        header,
+        footer,
+        children,
+    };
+    return (React.createElement(Modal, { ...restBackdropProps, 
+        // components:
+        dialog: React.cloneElement(React.cloneElement(dialog, defaultDialogProps), dialog.props), 
         // classes:
         mainClass: props.mainClass ?? sheet.main, variantClasses: [...(props.variantClasses ?? []),
             modalCardVariant.class,
@@ -326,7 +353,6 @@ export function ModalCard(props) {
         style: { ...(props.style ?? {}),
             // variants:
             ...modalCardVariant.style,
-        } },
-        React.createElement(ModalCardElement, { ...props })));
+        } }));
 }
 export { ModalCard as default };
