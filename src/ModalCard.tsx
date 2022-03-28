@@ -45,12 +45,21 @@ import {
     overwriteProps,
 }                           from '@cssfn/css-config'  // Stores & retrieves configuration using *css custom properties* (css variables)
 
+// nodestrap utilities:
+import {
+    // utilities:
+    setRef,
+}                           from '@nodestrap/utilities'
+
 // nodestrap components:
+import type {
+    // react components:
+    ElementProps,
+}                           from '@nodestrap/element'
 import {
     // hooks:
     usesSizeVariant,
     useExcitedState,
-    TogglerExcitedProps,
 }                           from '@nodestrap/basic'
 import {
     // styles:
@@ -372,11 +381,10 @@ export interface CardDialogProps<TElement extends HTMLElement = HTMLElement, TCl
         CardProps<TElement>,
         
         // appearances:
-        ModalCardVariant,
-        
-        // states:
-        TogglerExcitedProps
+        ModalCardVariant
 {
+    // components:
+    card? : React.ReactComponentElement<any, ElementProps>
 }
 export function CardDialog<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType>(props: CardDialogProps<TElement, TCloseType>) {
     // styles:
@@ -392,26 +400,35 @@ export function CardDialog<TElement extends HTMLElement = HTMLElement, TCloseTyp
     // rest props:
     const {
         // essentials:
-        elmRef,          // moved to <Card>
+        elmRef,                   // injected to <Card>
+        
+        
+        // semantics:
+        semanticTag,              // moved to <Popup>
+        semanticRole,             // moved to <Popup>
+        'aria-modal' : ariaModal, // moved to <Popup>
         
         
         // accessibilities:
-        isModal,         // moved to <Popup>
-        isVisible,       // moved to <Popup>
-        tabIndex = -1,   // moved to <Card>
-        active,          // moved to <Popup>
-        inheritActive,   // moved to <Popup>
+        active,                   // moved to <Popup>
+        inheritActive,            // moved to <Popup>
+        isVisible,                // moved to <Popup>
+        tabIndex = -1,            // added to <Card>
         
         
         // actions:
-        onActiveChange,  // implemented
-        onExcitedChange, // not implemented
+        onExcitedChange,          // not implemented
+        onActiveChange,           // implemented
+        
+        
+        // components:
+        card = <Card<TElement> />,
         
         
         // children:
-        header,          // changed the default
-        footer,          // changed the default
-    ...restProps} = props;
+        header,                   // changed the default
+        footer,                   // changed the default
+    ...restCardProps} = props;
     
     
     
@@ -481,12 +498,35 @@ export function CardDialog<TElement extends HTMLElement = HTMLElement, TCloseTyp
     
     
     // jsx:
+    const defaultCardProps : CardProps<TElement> = {
+        // other props:
+        ...restCardProps,
+        
+        
+        // essentials:
+        elmRef : !card.props.elmRef ? elmRef : (elm) => {
+            setRef(card.props.elmRef, elm);
+            
+            setRef(elmRef, elm);
+        },
+        
+        
+        // accessibilities:
+        ...{
+            tabIndex,
+        },
+        
+        
+        // children:
+        header : headerFn,
+        footer : footerFn,
+    };
     return (
         <Popup<TElement>
             // semantics:
-            semanticTag ={props.semanticTag   ?? 'dialog'}
-            semanticRole={props.semanticRole  ?? 'dialog'}
-            aria-modal={isModal}
+            semanticTag ={semanticTag}
+            semanticRole={semanticRole}
+            aria-modal={ariaModal}
             {...{
                 open : isVisible,
             }}
@@ -505,7 +545,7 @@ export function CardDialog<TElement extends HTMLElement = HTMLElement, TCloseTyp
             classes={[
                 sheet.main, // inject CardDialog class
             ]}
-            stateClasses={[...(props.stateClasses ?? []),
+            stateClasses={[
                 excitedState.class,
             ]}
             
@@ -516,25 +556,7 @@ export function CardDialog<TElement extends HTMLElement = HTMLElement, TCloseTyp
                 excitedState.handleAnimationEnd(e);
             }}
         >
-            <Card<TElement>
-                // other props:
-                {...restProps}
-                
-                
-                // essentials:
-                elmRef={elmRef}
-                
-                
-                // accessibilities:
-                {...{
-                    tabIndex,
-                }}
-                
-                
-                // children:
-                header={headerFn}
-                footer={footerFn}
-            />
+            { React.cloneElement(React.cloneElement(card, defaultCardProps), card.props) }
         </Popup>
     );
 }
@@ -560,14 +582,14 @@ export function ModalCard<TElement extends HTMLElement = HTMLElement, TCloseType
     
     // rest props:
     const {
-        // components:
-        dialog = <CardDialog<TElement, TCloseType> />,
-        
-        
         // ModalCardVariant:
         modalCardStyle,
         horzAlign,
         vertAlign,
+        
+        
+        // components:
+        card,
         
         
         // children:
@@ -579,26 +601,10 @@ export function ModalCard<TElement extends HTMLElement = HTMLElement, TCloseType
     
     
     // jsx:
-    const defaultDialogProps : CardDialogProps<TElement, TCloseType> = {
-        // ModalCardVariant:
-        modalCardStyle,
-        horzAlign,
-        vertAlign,
-        
-        
-        // children:
-        header,
-        footer,
-        children,
-    };
     return (
         <Modal<TElement, TCloseType>
             // other props:
             {...restBackdropProps}
-            
-            
-            // components:
-            dialog={React.cloneElement(React.cloneElement(dialog, defaultDialogProps), dialog.props)}
             
             
             // classes:
@@ -613,7 +619,25 @@ export function ModalCard<TElement extends HTMLElement = HTMLElement, TCloseType
                 // variants:
                 ...modalCardVariant.style,
             }}
-        />
+        >
+            <CardDialog<TElement, TCloseType>
+                // ModalCardVariant:
+                modalCardStyle={modalCardStyle}
+                horzAlign={horzAlign}
+                vertAlign={vertAlign}
+                
+                
+                // components:
+                card={card}
+                
+                
+                // children:
+                header={header}
+                footer={footer}
+            >
+                { children }
+            </CardDialog>
+        </Modal>
     );
 }
 export { ModalCard as default }

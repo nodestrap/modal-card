@@ -1,6 +1,6 @@
 {
   "name": "@nodestrap/modal-card",
-  "version": "4.0.6",
+  "version": "4.0.7",
   "description": "Overlays a dialog on site page.",
   "type": "module",
   "main": "dist/ModalCard.js",
@@ -38,8 +38,10 @@
     "@nodestrap/card": "^4.0.7",
     "@nodestrap/close-button": "^4.0.4",
     "@nodestrap/container": "^4.0.15",
-    "@nodestrap/modal": "^4.0.7",
+    "@nodestrap/element": "^4.0.8",
+    "@nodestrap/modal": "^4.0.10",
     "@nodestrap/popup": "^4.0.8",
+    "@nodestrap/utilities": "^4.0.3",
     "@types/react": "^17.0.43",
     "react": "^17.0.2"
   }

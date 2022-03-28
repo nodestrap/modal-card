@@ -15,7 +15,10 @@ createUseSheet, } from '@cssfn/react-cssfn'; // cssfn for react
 import { createCssConfig, 
 // utilities:
 usesGeneralProps, usesPrefixedProps, usesSuffixedProps, overwriteProps, } from '@cssfn/css-config'; // Stores & retrieves configuration using *css custom properties* (css variables)
-// nodestrap components:
+// nodestrap utilities:
+import { 
+// utilities:
+setRef, } from '@nodestrap/utilities';
 import { 
 // hooks:
 usesSizeVariant, useExcitedState, } from '@nodestrap/basic';
@@ -233,20 +236,25 @@ export function CardDialog(props) {
     // rest props:
     const { 
     // essentials:
-    elmRef, // moved to <Card>
+    elmRef, // injected to <Card>
+    // semantics:
+    semanticTag, // moved to <Popup>
+    semanticRole, // moved to <Popup>
+    'aria-modal': ariaModal, // moved to <Popup>
     // accessibilities:
-    isModal, // moved to <Popup>
-    isVisible, // moved to <Popup>
-    tabIndex = -1, // moved to <Card>
     active, // moved to <Popup>
     inheritActive, // moved to <Popup>
+    isVisible, // moved to <Popup>
+    tabIndex = -1, // added to <Card>
     // actions:
-    onActiveChange, // implemented
     onExcitedChange, // not implemented
+    onActiveChange, // implemented
+    // components:
+    card = React.createElement(Card, null), 
     // children:
     header, // changed the default
     footer, // changed the default
-    ...restProps } = props;
+    ...restCardProps } = props;
     // handlers:
     const handleClose = onActiveChange && ((e) => {
         if (!e.defaultPrevented) {
@@ -290,9 +298,25 @@ export function CardDialog(props) {
         return footer;
     })();
     // jsx:
+    const defaultCardProps = {
+        // other props:
+        ...restCardProps,
+        // essentials:
+        elmRef: !card.props.elmRef ? elmRef : (elm) => {
+            setRef(card.props.elmRef, elm);
+            setRef(elmRef, elm);
+        },
+        // accessibilities:
+        ...{
+            tabIndex,
+        },
+        // children:
+        header: headerFn,
+        footer: footerFn,
+    };
     return (React.createElement(Popup, { 
         // semantics:
-        semanticTag: props.semanticTag ?? 'dialog', semanticRole: props.semanticRole ?? 'dialog', "aria-modal": isModal, ...{
+        semanticTag: semanticTag, semanticRole: semanticRole, "aria-modal": ariaModal, ...{
             open: isVisible,
         }, 
         // accessibilities:
@@ -302,21 +326,14 @@ export function CardDialog(props) {
         // classes:
         classes: [
             sheet.main, // inject CardDialog class
-        ], stateClasses: [...(props.stateClasses ?? []),
+        ], stateClasses: [
             excitedState.class,
         ], 
         // events:
         onAnimationEnd: (e) => {
             // states:
             excitedState.handleAnimationEnd(e);
-        } },
-        React.createElement(Card, { ...restProps, 
-            // essentials:
-            elmRef: elmRef, ...{
-                tabIndex,
-            }, 
-            // children:
-            header: headerFn, footer: footerFn })));
+        } }, React.cloneElement(React.cloneElement(card, defaultCardProps), card.props)));
 }
 export function ModalCard(props) {
     // styles:
@@ -325,26 +342,14 @@ export function ModalCard(props) {
     const modalCardVariant = useModalCardVariant(props);
     // rest props:
     const { 
-    // components:
-    dialog = React.createElement(CardDialog, null), 
     // ModalCardVariant:
     modalCardStyle, horzAlign, vertAlign, 
+    // components:
+    card, 
     // children:
     header, footer, children, ...restBackdropProps } = props;
     // jsx:
-    const defaultDialogProps = {
-        // ModalCardVariant:
-        modalCardStyle,
-        horzAlign,
-        vertAlign,
-        // children:
-        header,
-        footer,
-        children,
-    };
     return (React.createElement(Modal, { ...restBackdropProps, 
-        // components:
-        dialog: React.cloneElement(React.cloneElement(dialog, defaultDialogProps), dialog.props), 
         // classes:
         mainClass: props.mainClass ?? sheet.main, variantClasses: [...(props.variantClasses ?? []),
             modalCardVariant.class,
@@ -353,6 +358,13 @@ export function ModalCard(props) {
         style: { ...(props.style ?? {}),
             // variants:
             ...modalCardVariant.style,
-        } }));
+        } },
+        React.createElement(CardDialog, { 
+            // ModalCardVariant:
+            modalCardStyle: modalCardStyle, horzAlign: horzAlign, vertAlign: vertAlign, 
+            // components:
+            card: card, 
+            // children:
+            header: header, footer: footer }, children)));
 }
 export { ModalCard as default };

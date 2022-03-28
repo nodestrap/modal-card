@@ -1,6 +1,6 @@
-/// <reference types="react" />
+import { default as React } from 'react';
 import type { Prop } from '@cssfn/css-types';
-import { TogglerExcitedProps } from '@nodestrap/basic';
+import type { ElementProps } from '@nodestrap/element';
 import { OrientationName, OrientationVariant, CardProps } from '@nodestrap/card';
 import { BackdropStyle, BackdropVariant, ModalCloseType, DialogProps, ModalProps } from '@nodestrap/modal';
 export declare type ModalCardStyle = 'scrollable';
@@ -35,7 +35,8 @@ export declare const cssProps: import("@cssfn/css-config").Refs<{
     vertAlign: string;
 }>, cssConfig: import("@cssfn/css-config").CssConfigSettings;
 export declare type ModalCardCloseType = 'ui' | ModalCloseType;
-export interface CardDialogProps<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType> extends DialogProps<TElement, TCloseType>, CardProps<TElement>, ModalCardVariant, TogglerExcitedProps {
+export interface CardDialogProps<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType> extends DialogProps<TElement, TCloseType>, CardProps<TElement>, ModalCardVariant {
+    card?: React.ReactComponentElement<any, ElementProps>;
 }
 export declare function CardDialog<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType>(props: CardDialogProps<TElement, TCloseType>): JSX.Element;
 export interface ModalCardProps<TElement extends HTMLElement = HTMLElement, TCloseType = ModalCardCloseType> extends ModalProps<TElement, TCloseType>, CardDialogProps<TElement, TCloseType> {
